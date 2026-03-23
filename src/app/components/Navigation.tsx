@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -24,20 +25,20 @@ export function Navigation() {
           </div>
           <span className="text-cyan-300 font-semibold text-lg tracking-wide">Sagi-Crab</span>
         </div>
-        
+
         <div className="hidden md:flex items-center gap-8">
-          <a href="#home" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          <Link to="/#home" className="text-gray-300 hover:text-cyan-400 transition-colors">
             Início
-          </a>
-          <a href="#about" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          </Link>
+          <Link to="/#about" className="text-gray-300 hover:text-cyan-400 transition-colors">
             Sobre
-          </a>
-          <a href="#features" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          </Link>
+          <Link to="/#features" className="text-gray-300 hover:text-cyan-400 transition-colors">
             Recursos
-          </a>
-          <a href="#crew" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          </Link>
+          <Link to="/#crew" className="text-gray-300 hover:text-cyan-400 transition-colors">
             Tripulação
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

@@ -38,13 +38,14 @@ export function Hero() {
           </p>
           
           <div className="flex flex-wrap gap-4">
-            <motion.button
+            <motion.a
+            href="/assistentes"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-medium shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-shadow"
             >
               Iniciar Exploração
-            </motion.button>
+            </motion.a>
             
             <motion.button
               whileHover={{ scale: 1.05 }}
