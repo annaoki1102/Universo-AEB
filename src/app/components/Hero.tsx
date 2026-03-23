@@ -1,7 +1,5 @@
-import image_cf7d005a0c58fd0af4eb120de2d846f25c98b860 from '../../assets/cf7d005a0c58fd0af4eb120de2d846f25c98b860.png'
-import image_fe4c45fab02d404987448768223a2c0afc33ab15 from '../../assets/fe4c45fab02d404987448768223a2c0afc33ab15.png'
 import { motion } from 'motion/react';
-import sagiCrabImage from '../../assets/24c2ec9a48a14e1b102bcbe38beaa0daec8ae3e0.png';
+import sagiCrabImage from '../../assets/sagicrab.png';
 import logoImage from '../../assets/fe4c45fab02d404987448768223a2c0afc33ab15.png';
 
 export function Hero() {
@@ -81,7 +79,7 @@ export function Hero() {
             
             {/* Image */}
             <img
-              src={image_cf7d005a0c58fd0af4eb120de2d846f25c98b860}
+              src={sagiCrabImage}
               alt="Sagi-Crab"
               className="relative w-[130%] h-auto"
             />
