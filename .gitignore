@@ -1,0 +1,4 @@
+node_modules
+vite-project/node_modules
+dist
+vite-project/dist
