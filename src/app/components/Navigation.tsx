@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export function Navigation() {
@@ -8,35 +8,44 @@ export function Navigation() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-[#0a0e27]/90 backdrop-blur-md shadow-lg shadow-cyan-500/10' : 'bg-transparent'
+        scrolled
+          ? "bg-[#050b1f]/95 backdrop-blur-md border-b border-white/10"
+          : "bg-[#050b1f]/95 border-b border-white/10"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/50">
-            <span className="text-white font-bold text-sm">SC</span>
-          </div>
-          <span className="text-cyan-300 font-semibold text-lg tracking-wide">Sagi-Crab</span>
-        </div>
+      <div className="w-full px-4 md:px-6 py-3 flex items-center justify-between">
+        <Link to="/#home" className="flex items-center gap-3 no-underline">
+          <div className="text-2xl">🚀</div>
 
-        <div className="hidden md:flex items-center gap-8">
-          <Link to="/#home" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          <div className="leading-tight">
+            <div className="text-white font-extrabold tracking-wide text-lg md:text-xl uppercase">
+              Turma AEB
+            </div>
+            <div className="text-white/55 text-[10px] md:text-xs tracking-[0.22em] uppercase">
+              Agência Espacial Brasileira · AEB Escola
+            </div>
+          </div>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-8 text-sm">
+          <Link to="/#home" className="text-white/85 hover:text-white transition-colors">
             Início
           </Link>
-          <Link to="/#about" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          <Link to="/#about" className="text-white/85 hover:text-white transition-colors">
             Sobre
           </Link>
-          <Link to="/#features" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          <Link to="/#features" className="text-white/85 hover:text-white transition-colors">
             Recursos
           </Link>
-          <Link to="/#crew" className="text-gray-300 hover:text-cyan-400 transition-colors">
+          <Link to="/#crew" className="text-white/85 hover:text-white transition-colors">
             Tripulação
           </Link>
         </div>
