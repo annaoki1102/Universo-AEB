@@ -1,377 +1,208 @@
-# 📐 Documentação de Arquitetura - Universo AEB
+# Documentacao de Arquitetura - Universo AEB
 
-## 📋 Índice
+## Indice
 
-1. [Visão Geral](#visão-geral)
-2. [Stack Tecnológico](#stack-tecnológico)
+1. [Visao Geral](#visao-geral)
+2. [Stack Tecnologico](#stack-tecnologico)
 3. [Estrutura de Pastas](#estrutura-de-pastas)
 4. [Componentes Principais](#componentes-principais)
-5. [Padrão de Arquitetura](#padrão-de-arquitetura)
+5. [Padrao de Arquitetura](#padrao-de-arquitetura)
 6. [Fluxo de Dados](#fluxo-de-dados)
 7. [Guia de Desenvolvimento](#guia-de-desenvolvimento)
-8. [Padrões de Código](#padrões-de-código)
+8. [Padroes de Codigo](#padroes-de-codigo)
 9. [Como Contribuir](#como-contribuir)
 
 ---
 
-## 🎯 Visão Geral
+## Visao Geral
 
-**Universo AEB** é uma aplicação web moderna construída com React, TypeScript e Vite. O projeto foi prototipado em Figma e convertido em uma Single Page Application (SPA) completamente funcional, implementada em Vercel.
+**Universo AEB** e uma plataforma web educacional da Turma AEB (Agencia Espacial Brasileira - AEB Escola). O projeto foi prototipado no Figma e convertido em uma Single Page Application (SPA) com React, TypeScript e Vite, deployada na Vercel.
 
-### Características Principais
-- ✅ **Single Page Application (SPA)** - Navegação rápida cliente-side
-- ✅ **Design Responsivo** - Totalmente adaptável a todos os devices
-- ✅ **Componentes Reutilizáveis** - Baseado em Radix UI (shadcn/ui)
-- ✅ **Animações Fluidas** - Utilizando Framer Motion
-- ✅ **Totalmente Tipado** - TypeScript em todo o projeto
-- ✅ **Pronto para Produção** - Otimizado e deployado em Vercel
+A aplicacao apresenta assistentes virtuais de IA (Cosminho, Luana e Sagi-Crab) que guiam os usuarios em uma jornada de aprendizagem sobre exploracao espacial, com animacoes imersivas e tema espacial.
 
----
-
-## 🛠️ Stack Tecnológico
-
-### Frontend
-| Tecnologia | Versão | Propósito |
-|-----------|--------|----------|
-| **React** | 18.3.1 | Framework UI |
-| **TypeScript** | 5.x | Type safety |
-| **Vite** | 6.3.5 | Build tool e dev server |
-| **React Router** | 7.13.2 | Roteamento SPA |
-
-### Estilos
-| Tecnologia | Versão | Propósito |
-|-----------|--------|----------|
-| **Tailwind CSS** | 4.1.12 | Utility-first CSS framework |
-| **PostCSS** | 8.x | Processamento de CSS |
-
-### Componentes & UI
-| Biblioteca | Versão | Propósito |
-|-----------|--------|----------|
-| **Radix UI** | 1.x | Componentes acessíveis primitivos |
-| **shadcn/ui** | - | Componentes UI built com Radix |
-| **Material UI** | 5.x | Componentes Material Design |
-
-### Animações & Interatividade
-| Biblioteca | Versão | Propósito |
-|-----------|--------|----------|
-| **Framer Motion** | 12.23.24 | Animações React |
-| **React Hook Form** | 7.55.0 | Gerenciamento de formulários |
-| **React Dnd** | 16.0.1 | Drag & drop |
-
-### Utilitários
-| Biblioteca | Versão | Propósito |
-|-----------|--------|----------|
-| **Recharts** | 2.15.2 | Gráficos e visualizações |
-| **Sonner** | 2.0.3 | Toast notifications |
-| **Zod** | 3.x | Validação de data/schemas |
-
-### Deploy
-| Serviço | Propósito |
-|--------|----------|
-| **Vercel** | Hosting, CI/CD e serverless functions |
+### Caracteristicas Principais
+- **Single Page Application (SPA)** - Navegacao rapida client-side com React Router
+- **Design Responsivo** - Adaptavel a todos os dispositivos (mobile-first)
+- **Componentes Reutilizaveis** - Baseado em Radix UI (shadcn/ui) com ~48 componentes
+- **Animacoes Fluidas** - Framer Motion para transicoes e efeitos visuais
+- **Background Interativo** - Campo estelar animado via Canvas API
+- **Totalmente Tipado** - TypeScript em todo o projeto
+- **Deploy Automatizado** - CI/CD via Vercel
 
 ---
 
-## 📁 Estrutura de Pastas
+## Stack Tecnologico
 
-```
-Universo AEB/
-│
-├── 📂 src/                              # Código-fonte principal
-│   ├── main.tsx                         # Entry point React
-│   │
-│   ├── 📂 app/                          # Aplicação principal
-│   │   ├── App.tsx                      # Componente raiz com rotas
-│   │   │
-│   │   ├── 📂 components/               # Componentes reutilizáveis
-│   │   │   ├── Hero.tsx                 # Seção hero com animações
-│   │   │   ├── Navigation.tsx           # Barra de navegação
-│   │   │   ├── About.tsx                # Seção sobre o projeto
-│   │   │   ├── Features.tsx             # Funcionalidades/características
-│   │   │   ├── Crew.tsx                 # Seção de assistentes/equipe
-│   │   │   ├── Footer.tsx               # Rodapé
-│   │   │   ├── StarField.tsx            # Background animado com estrelas
-│   │   │   ├── ScrollToSection.tsx      # Scroll suave entre seções
-│   │   │   │
-│   │   │   ├── 📂 figma/                # Componentes adaptados do Figma
-│   │   │   │   └── ImageWithFallback.tsx # Componente com fallback
-│   │   │   │
-│   │   │   └── 📂 ui/                   # Componentes de UI base (shadcn/ui)
-│   │   │       ├── accordion.tsx         # Accordion component
-│   │   │       ├── alert.tsx             # Alert component
-│   │   │       ├── button.tsx            # Button component
-│   │   │       ├── card.tsx              # Card component
-│   │   │       ├── dialog.tsx            # Dialog/modal component
-│   │   │       ├── form.tsx              # Form wrapper
-│   │   │       ├── input.tsx             # Input field
-│   │   │       ├── select.tsx            # Select dropdown
-│   │   │       ├── tabs.tsx              # Tabs component
-│   │   │       ├── table.tsx             # Table component
-│   │   │       ├── dropdown-menu.tsx     # Dropdown menu
-│   │   │       ├── hover-card.tsx        # Hover card
-│   │   │       ├── sidebar.tsx           # Sidebar layout
-│   │   │       └── [+25 mais componentes]
-│   │   │
-│   │   └── 📂 pages/                    # Páginas da aplicação
-│   │       └── Assistentes.tsx          # Página de assistentes/IA
-│   │
-│   ├── 📂 assets/                       # Mídia e recursos estáticos
-│   │   ├── sagicrab.png
-│   │   ├── logo.png
-│   │   └── [outras imagens]
-│   │
-│   ├── 📂 styles/                       # Estilos globais
-│   │   ├── index.css                    # Arquivo principal de imports
-│   │   ├── tailwind.css                 # Configuração Tailwind v4
-│   │   ├── theme.css                    # Variáveis de tema customizadas
-│   │   └── fonts.css                    # Importação de fontes
-│   │
-│   ├── vite-env.d.ts                    # Tipos Vite
-│
-├── 📂 public/                           # Assets servidos estaticamente
-│   └── _redirects                       # Regras de redirect Vercel (SPA)
-│
-├── 📂 dist/                             # Build de produção (gerado)
-│
-├── ⚙️ index.html                         # Template HTML
-├── ⚙️ vite.config.ts                     # Configuração Vite
-├── ⚙️ postcss.config.mjs                 # Configuração PostCSS
-├── ⚙️ package.json                       # Dependências e scripts
-├── ⚙️ package-lock.json                  # Lock file
-├── ⚙️ tsconfig.json                      # Configuração TypeScript
-├── ⚙️ vercel.json                        # Configuração Vercel
-│
-├── 📄 README.md                         # Documentação principal
-├── 📄 ARCHITECTURE.md                   # Este arquivo
-├── 📄 ATTRIBUTIONS.md                   # Atribuições e créditos
+Consulte a tabela completa de tecnologias no [README.md](./README.md#stack-tecnologica).
 
-```
+### Dependencias Chave e Seus Papeis
 
-### Legenda
-- 📂 = Pasta/Diretório
-- ⚙️ = Arquivo de configuração
-- 📄 = Arquivo de documentação
+| Categoria | Pacote | Uso no Projeto |
+|-----------|--------|----------------|
+| **Core** | `react` 18.3.1 | Renderizacao de componentes |
+| **Core** | `react-router-dom` ^7.13.2 | Rotas `/` e `/assistentes` |
+| **Animacao** | `motion` 12.23.24 | Transicoes de entrada, hover e scroll em Hero, About, Features, Crew |
+| **Icones** | `lucide-react` 0.487.0 | Icones em About (Rocket, Brain, Satellite) e Crew (Sparkles, Satellite, Wrench) |
+| **UI** | `@radix-ui/*` | Primitivos acessiveis usados pelos componentes `src/app/components/ui/` |
+| **UI** | `@mui/material` 7.3.5 | Usado no sub-projeto `vite-project/` (tela Assistentes) |
+| **CSS** | `tailwindcss` 4.1.12 | Estilizacao via classes utilitarias (plugin Vite) |
+| **CSS** | `tailwind-merge` 3.2.0 | Merge inteligente de classes Tailwind no `utils.ts` |
+| **Notificacoes** | `sonner` 2.0.3 | Toast notifications |
+| **Build** | `vite` 6.3.5 | Bundler, dev server, HMR |
 
 ---
 
-## 🧩 Componentes Principais
+## Estrutura de Pastas
 
-### Estrutura de Layout Principal
+Consulte a arvore completa no [README.md](./README.md#estrutura-do-projeto). Abaixo, o foco e na organizacao logica.
 
-A aplicação segue uma estrutura hierárquica bem definida:
+### Organizacao por Camada
 
-```
-<BrowserRouter>
-  <App>
-    <Routes>
-      <Route path="/" element={<HomePage />}>
-        <StarField />                    ← Background animado
-        <Navigation />                   ← Barra de navegação
-        <Hero />                         ← Seção destaque
-        <About />                        ← Sobre o projeto
-        <Features />                     ← Funcionalidades
-        <Crew />                         ← Assistentes
-        <Footer />                       ← Rodapé
-      </Route>
-      <Route path="/assistentes" element={<Assistentes />} />
-    </Routes>
-  </App>
-</BrowserRouter>
-```
-
-### Descrição dos Componentes
-
-#### 🎯 Hero.tsx
-**Propósito**: Seção inicial chamativa com animações  
-**Features**:
-- Animações de entrada com Framer Motion
-- Conteúdo dinâmico com CTAs (Call To Action)
-- Responsivo para mobile
-
-**Props**: Nenhum (utiliza dados internos)  
-**Estilo**: Tailwind CSS com animações
-
-#### 🧭 Navigation.tsx
-**Propósito**: Barra de navegação principal  
-**Features**:
-- Links para seções principais
-- Menu mobile responsivo
-- Integração com React Router
-- Scroll suave via `ScrollToSection`
-
-**Props**: Nenhum  
-**Eventos**: Navega para seções anchor
-
-#### ℹ️ About.tsx
-**Propósito**: Apresentação do projeto  
-**Features**:
-- Descrição textual
-- Imagens e ícones
-- Layout responsivo
-
-#### ✨ Features.tsx
-**Propósito**: Destaque de funcionalidades  
-**Features**:
-- Grid de features
-- Ícones visuais
-- Descrições concisas
-
-#### 👥 Crew.tsx
-**Propósito**: Apresentação dos assistentes/equipe  
-**Features**:
-- Cards com perfis
-- Informações de cada assistente
-- Layout em grid
-
-#### 🔖 Footer.tsx
-**Propósito**: Rodapé com informações e links  
-**Features**:
-- Links rápidos
-- Informações de contato
-- Copyright
-
-#### ⭐ StarField.tsx
-**Propósito**: Background animado com efeito de campo estelar  
-**Features**:
-- Canvas animado
-- Efeito parallax
-- Performance otimizada
-
-#### 📜 ScrollToSection.tsx
-**Propósito**: Gerencia scroll suave entre seções  
-**Features**:
-- Scroll animation
-- Ancoras de navegação
-- Integração com Navigation
+| Camada | Diretorio | Responsabilidade |
+|--------|-----------|------------------|
+| **Entrada** | `src/main.tsx` | Monta `<BrowserRouter>` + `<App />` em `#root` |
+| **Rotas** | `src/app/App.tsx` | Define rotas `/` e `/assistentes` |
+| **Secoes da Home** | `src/app/components/` | Hero, About, Features, Crew, Footer, Navigation |
+| **Infraestrutura UI** | `src/app/components/ui/` | ~48 componentes shadcn/ui reutilizaveis |
+| **Paginas** | `src/pages/` | `Assistentes.tsx` (importa do sub-projeto `vite-project/`) |
+| **Estilos** | `src/styles/` | Tailwind v4, tema customizado, fontes |
+| **Assets** | `src/assets/` + `public/images/` | Imagens importadas pelo bundler e servidas estaticamente |
+| **Sub-projeto** | `vite-project/` | App separado para a tela de Assistentes (React + MUI) |
 
 ---
 
-## 🏗️ Padrão de Arquitetura
+## Componentes Principais
+
+### Hierarquia de Renderizacao
+
+```
+main.tsx
+└── <BrowserRouter>
+    └── <App>
+        ├── <ScrollToSection />           # Utilitario: reage ao hash da URL
+        ├── <StarField />                 # Canvas fixo com 600 estrelas animadas
+        ├── <Navigation />                # Nav fixa no topo (scroll-aware)
+        ├── <main>
+        │   ├── Route "/"
+        │   │   ├── <Hero />              # CTA + imagem Sagi-Crab com glow
+        │   │   ├── <About />             # 3 cards (Rocket, Brain, Satellite)
+        │   │   ├── <Features />          # Grid de 3 recursos com imagens
+        │   │   └── <Crew />              # Cards dos 3 assistentes
+        │   └── Route "/assistentes"
+        │       └── <Assistentes />       # Importa TelaAssistentes do vite-project
+        └── <Footer />                    # Links de navegacao + copyright
+```
+
+### Detalhamento dos Componentes
+
+| Componente | Arquivo | Descricao | Estado / Props |
+|-----------|---------|-----------|----------------|
+| **Hero** | `Hero.tsx` | Secao inicial com animacoes de entrada (opacity, x, scale), badge "Versao Alpha 1.0", CTAs "Iniciar Exploracao" e "Saiba Mais", imagem Sagi-Crab flutuante | Sem props, sem estado |
+| **Navigation** | `Navigation.tsx` | Barra fixa no topo. Muda estilo ao scroll (>50px). Navegacao por secoes via `handleSectionNavigation` com scroll suave. Redireciona para `/#section` se estiver em `/assistentes` | Estado: `scrolled` (boolean) |
+| **About** | `About.tsx` | Tres cards com icones Lucide (Rocket, Brain, Satellite) e animacoes whileInView | Sem props, sem estado |
+| **Features** | `Features.tsx` | Grid de 3 recursos com imagens de `/public/images/`. Dados definidos em array `features` | Sem props, sem estado |
+| **Crew** | `Crew.tsx` | Cards dos assistentes (Cosminho, Luana, Sagi-Crab) com icones e gradientes. Dados definidos em array `crewMembers` | Sem props, sem estado |
+| **Footer** | `Footer.tsx` | Rodape com 3 colunas: branding Sagi-Crab, links de navegacao (scroll suave), info AEB Escola. Copyright 2026 | Sem props |
+| **StarField** | `StarField.tsx` | Canvas full-screen fixo com 600 estrelas. Tres niveis de brilho/tamanho para profundidade. Efeito twinkle via animacao `requestAnimationFrame`. Redimensiona com a janela | Sem props, ref ao canvas |
+| **ScrollToSection** | `ScrollToSection.tsx` | Componente utilitario (renderiza `null`). Observa `location.hash` e faz scroll suave para o elemento correspondente com delay de 200ms | Sem props |
+| **ImageWithFallback** | `figma/ImageWithFallback.tsx` | Wrapper de `<img>` que exibe placeholder SVG em caso de erro de carregamento | Props: `React.ImgHTMLAttributes` |
+
+---
+
+## Padrao de Arquitetura
 
 ### Arquitetura em Camadas
 
 ```
-┌─────────────────────────────────────┐
-│    User Interface Layer             │
-│  (Componentes React, UI shadcn)    │
-└────────────────┬────────────────────┘
-                 │
-┌────────────────▼────────────────────┐
-│  Component Logic Layer              │
-│  (State, Handlers, Effects)         │
-└────────────────┬────────────────────┘
-                 │
-┌────────────────▼────────────────────┐
-│  Styling Layer                      │
-│  (Tailwind CSS, theme.css)          │
-└────────────────┬────────────────────┘
-                 │
-┌────────────────▼────────────────────┐
-│  Routing Layer                      │
-│  (React Router)                     │
-└─────────────────────────────────────┘
+Roteamento (React Router)
+    └── Paginas / Layout (App.tsx)
+        └── Componentes de Secao (Hero, About, Features, Crew)
+            ├── Componentes UI (shadcn/ui, Radix UI)
+            ├── Animacoes (Framer Motion)
+            └── Estilos (Tailwind CSS + theme.css)
 ```
 
-### Padrões de Design Utilizados
+### Padroes de Design Utilizados
 
-#### 1. **Component-Based Architecture**
-Cada seção é um componente React independente e reutilizável:
+#### 1. Component-Based Architecture
+Cada secao da pagina e um componente React independente. Todos exportam funcoes nomeadas (named exports), exceto `Assistentes.tsx` que usa default export:
 ```tsx
-// Exemplo: src/app/components/Hero.tsx
-function Hero() {
+// src/app/components/Hero.tsx
+export function Hero() {
   return (
-    <section className="hero" id="hero">
-      {/* Conteúdo */}
+    <section id="home" className="...">
+      {/* Conteudo */}
     </section>
   );
 }
 ```
 
-#### 2. **Utility-First CSS (Tailwind)**
-Estilos aplicados diretamente via classes:
+#### 2. Utility-First CSS (Tailwind v4)
+Estilos aplicados diretamente via classes. O projeto usa Tailwind v4 com o plugin `@tailwindcss/vite` (nao precisa de configuracao PostCSS para Tailwind):
 ```tsx
-<div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 p-8">
+<div className="flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600 p-8">
 ```
 
-#### 3. **shadcn/ui Pattern**
-Componentes primitivos de UI importados e customizáveis:
+#### 3. shadcn/ui Pattern
+Componentes primitivos de UI em `src/app/components/ui/`. Importados via alias `@/`:
 ```tsx
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-
-export function MyComponent() {
-  return (
-    <Card>
-      <Button>Click me</Button>
-    </Card>
-  )
-}
+import { Button } from "@/app/components/ui/button"
+import { Card } from "@/app/components/ui/card"
 ```
 
-#### 4. **SPA (Single Page Application)**
-Toda navegação acontece lado-cliente via React Router:
+#### 4. Dados como Constantes Inline
+Os componentes Features e Crew definem seus dados como arrays constantes no topo do arquivo, sem backend ou API:
 ```tsx
-// Em App.tsx
-<BrowserRouter>
-  <Routes>
-    <Route path="/" element={<HomePage />} />
-    <Route path="/assistentes" element={<Assistentes />} />
-  </Routes>
-</BrowserRouter>
+const crewMembers = [
+  { name: 'Cosminho', role: 'Guia de Iniciacao Espacial', ... },
+  { name: 'Luana', role: 'Especialista em Tecnologia', ... },
+  { name: 'Sagi-Crab', role: 'Assistente Inteligente', ... },
+];
 ```
+
+#### 5. Sub-projeto Embarcado
+A pagina `/assistentes` importa diretamente de `vite-project/src/App.jsx`, um projeto React separado com seu proprio `package.json` e configuracao. Isso permite desenvolvimento independente da tela de assistentes.
 
 ---
 
-## 🔄 Fluxo de Dados
+## Fluxo de Dados
 
-### Ciclo de Vida da Aplicação
+### Ciclo de Vida da Aplicacao
 
 ```
 1. Browser carrega index.html
-        ↓
-2. main.tsx monta React em #root
-        ↓
-3. <BrowserRouter> inicializa routing
-        ↓
-4. <App /> renderiza com rotas ativas
-        ↓
-5. Componentes renderizam conforme rota
-        ↓
-6. Interações disparam handlers
-        ↓
-7. Estado atualiza (se aplicável)
-        ↓
-8. Re-render de componentes afetados
+        |
+2. main.tsx monta <BrowserRouter> + <App /> em #root
+        |
+3. React Router resolve a rota ativa
+        |
+4. App.tsx renderiza componentes globais (StarField, Navigation, Footer)
+   + componentes da rota ativa (Hero+About+Features+Crew ou Assistentes)
+        |
+5. Framer Motion executa animacoes de entrada (initial -> animate)
+        |
+6. StarField inicia loop de animacao via requestAnimationFrame
+        |
+7. Interacoes do usuario (scroll, clique) disparam handlers locais
 ```
 
-### Fluxo de Dados Entre Componentes
+### Comunicacao Entre Componentes
 
-```
-App (raiz)
-├── Route / (Home)
-│   ├── StarField [background]
-│   ├── Navigation
-│   │   └── Scroll → ScrollToSection
-│   ├── Hero
-│   ├── About
-│   ├── Features
-│   ├── Crew
-│   └── Footer
-└── Route /assistentes
-    └── Assistentes
-        └── Footer
-```
+O projeto tem pouca comunicacao entre componentes. Cada secao e autossuficiente:
 
-**Comunicação**: Props para baixo, callbacks para cima (padrão React)
+- **Navigation e Footer** usam `handleSectionNavigation()` / `handleFooterNavigation()` para scroll suave via DOM (`document.getElementById` + `scrollIntoView`)
+- **ScrollToSection** observa `location.hash` via React Router e faz scroll automatico
+- Nao ha estado global (Context, Redux, Zustand). Cada componente gerencia seu proprio estado local
+- Dados dos assistentes e features sao constantes inline, sem fetch de API
 
 ---
 
-## 🚀 Guia de Desenvolvimento
+## Guia de Desenvolvimento
 
 ### Setup Inicial
 
 ```bash
-# 1. Instalar dependências
+# 1. Instalar dependencias
 npm install
 
 # 2. Iniciar servidor de desenvolvimento
@@ -380,290 +211,157 @@ npm run dev
 # 3. Acessar em http://localhost:5173
 ```
 
-### Adicionando um Novo Componente
+> **Nota:** O sub-projeto `vite-project/` tem seu proprio `package.json`. Se for modificar a tela de Assistentes, rode `npm install` tambem dentro de `vite-project/`.
 
-#### 1. Criar arquivo do componente
+### Adicionando uma Nova Secao a Home
+
+1. Crie o componente em `src/app/components/`:
 ```tsx
-// src/app/components/MeuComponente.tsx
-import { FC } from 'react'
+// src/app/components/MinhaSecao.tsx
+import { motion } from 'motion/react';
 
-interface MeuComponenteProps {
-  titulo: string
-  descricao?: string
-}
-
-export const MeuComponente: FC<MeuComponenteProps> = ({ 
-  titulo, 
-  descricao 
-}) => {
+export function MinhaSecao() {
   return (
-    <div className="p-4 rounded-lg bg-white shadow-md">
-      <h2 className="text-2xl font-bold">{titulo}</h2>
-      {descricao && <p className="text-gray-600">{descricao}</p>}
-    </div>
-  )
-}
-
-export default MeuComponente
-```
-
-#### 2. Importar e usar em outro componente
-```tsx
-// src/app/components/SomeSection.tsx
-import MeuComponente from './MeuComponente'
-
-export function SomeSection() {
-  return (
-    <section>
-      <MeuComponente 
-        titulo="Bem-vindo" 
-        descricao="Esta é uma seção nova"
-      />
+    <section id="minha-secao" className="relative py-24 px-6">
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+            Titulo
+          </h2>
+        </motion.div>
+      </div>
     </section>
-  )
+  );
 }
 ```
 
-### Adicionando uma Nova Página
+2. Importe e adicione ao layout em `App.tsx`:
+```tsx
+import { MinhaSecao } from './components/MinhaSecao';
 
-#### 1. Criar arquivo da página
+// Dentro da Route "/":
+<>
+  <Hero />
+  <About />
+  <Features />
+  <MinhaSecao />  {/* Nova secao */}
+  <Crew />
+</>
+```
+
+3. Adicione o link na `Navigation.tsx` e no `Footer.tsx` se necessario.
+
+### Adicionando uma Nova Pagina (Rota)
+
+1. Crie o arquivo em `src/pages/`:
 ```tsx
 // src/pages/MinhaNovaPage.tsx
-export function MinhaNovaPage() {
+export default function MinhaNovaPage() {
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold">Minha Nova Página</h1>
+      <h1 className="text-4xl font-bold">Titulo</h1>
     </div>
-  )
+  );
 }
 ```
 
-#### 2. Adicionar rota em App.tsx
+2. Adicione a rota em `App.tsx`:
 ```tsx
-// src/app/App.tsx
-import { MinhaNovaPage } from '@/pages/MinhaNovaPage'
+import MinhaNovaPage from '../pages/MinhaNovaPage';
 
-export function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={/* ... */} />
-        <Route path="/minha-pagina" element={<MinhaNovaPage />} />
-      </Routes>
-    </BrowserRouter>
-  )
-}
+<Routes>
+  <Route path="/" element={...} />
+  <Route path="/assistentes" element={<Assistentes />} />
+  <Route path="/minha-pagina" element={<MinhaNovaPage />} />
+</Routes>
 ```
 
-### Adicionando um Componente de UI Customizado
-
-Se for usar um componente UI shadcn que ainda não existe:
-
-```bash
-# Exemplo: adicionar um tooltip
-npx shadcn-ui@latest add tooltip
-```
-
-Isso cria `src/components/ui/tooltip.tsx` com o componente pronto.
+> **Nota sobre SPA:** O `vercel.json` ja redireciona todas as rotas para `/`, entao novas rotas funcionam automaticamente na Vercel.
 
 ---
 
-## 📝 Padrões de Código
+## Padroes de Codigo
 
-### 1. **Nomeação de Arquivos**
-- Componentes: PascalCase (ex: `Hero.tsx`, `Navigation.tsx`)
-- Utilidades: camelCase (ex: `utils.ts`, `hooks.ts`)
-- Páginas: PascalCase (ex: `Assistentes.tsx`)
+### Convencoes do Projeto
 
-### 2. **Estrutura de Componentes**
+| Aspecto | Convencao | Exemplo |
+|---------|-----------|----------|
+| **Arquivos de componente** | PascalCase | `Hero.tsx`, `Navigation.tsx` |
+| **Arquivos utilitarios** | camelCase | `utils.ts`, `use-mobile.ts` |
+| **Componentes UI (shadcn)** | kebab-case | `hover-card.tsx`, `dropdown-menu.tsx` |
+| **Exports de secao** | Named export (funcao) | `export function Hero() {}` |
+| **Exports de pagina** | Default export | `export default function Assistentes() {}` |
+| **Animacoes** | `motion` de `motion/react` | **Nao** `framer-motion` diretamente |
+| **Alias de import** | `@/` aponta para `src/` | `import { Button } from '@/app/components/ui/button'` |
+
+### Ordem de Imports
 
 ```tsx
-// ✅ PADRÃO RECOMENDADO
-import { FC, useState } from 'react'
-import { Button } from '@/components/ui/button'
-
-interface MyComponentProps {
-  title: string
-  onClose?: () => void
-}
-
-/**
- * MyComponent - Descrição breve do componente
- * @param title - Título do componente
- * @param onClose - Callback quando fechar
- */
-export const MyComponent: FC<MyComponentProps> = ({ 
-  title, 
-  onClose 
-}) => {
-  const [count, setCount] = useState(0)
-
-  const handleIncrement = () => setCount(c => c + 1)
-
-  return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-xl font-bold">{title}</h2>
-      <p>Count: {count}</p>
-      <Button onClick={handleIncrement}>Increment</Button>
-      {onClose && <Button onClick={onClose}>Close</Button>}
-    </div>
-  )
-}
+import { useState, useEffect } from 'react'          // 1. React core
+import { useLocation } from 'react-router-dom'       // 2. React Router
+import { motion } from 'motion/react'                // 3. Bibliotecas externas
+import { Rocket } from 'lucide-react'                // 4. Icones
+import { Button } from '@/app/components/ui/button'  // 5. Componentes UI
+import imagemLocal from '../../assets/imagem.png'    // 6. Assets
 ```
 
-### 3. **Estilização com Tailwind**
+### Padrao de Secao
 
-```tsx
-// ✅ BOM - Classes bem organizadas
-<div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-  {/* conteúdo */}
-</div>
+Todas as secoes da home seguem o mesmo padrao:
+- `<section id="nome">` com ID para ancoragem
+- Container `max-w-6xl mx-auto` para largura maxima
+- Animacoes `whileInView` do Framer Motion com `viewport={{ once: true }}`
+- Palette de cores: gradientes cyan-to-blue, fundo `#0a0e27` / `#0f1629`
 
-// ❌ EVITAR - Classes desorganizadas
-<div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-between rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+---
 
-// Usar variáveis para classes repetidas
-const buttonClass = "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-```
+## Como Contribuir
 
-### 4. **Imports Organizados**
+Consulte [CONTRIBUTING.md](./CONTRIBUTING.md) para o guia completo de contribuicao.
 
-```tsx
-// ✅ ORDEM RECOMENDADA
-import { FC, useState, useEffect } from 'react'          // React core
-import { useNavigate } from 'react-router-dom'          // Router
-import { motion } from 'framer-motion'                  // Libraries
-import { Button } from '@/components/ui/button'         // UI Components
-import { MyHelper } from '@/utils/helpers'              // Utils
-import './MyComponent.css'                              // Styles
-```
+---
 
-### 5. **Tipos e Interfaces**
+## Configuracao de Deploy
 
-```tsx
-// ✅ BEM TIPADO
-interface UserProfile {
-  id: string
-  name: string
-  email: string
-  role: 'admin' | 'user' | 'guest'
-  createdAt: Date
-}
+### Vercel
 
-interface CardProps {
-  user: UserProfile
-  onClick?: (id: string) => void
-}
+O projeto esta configurado para deploy na Vercel com:
+- **Build command:** `npm run build` (gera `dist/`)
+- **Rewrites:** todas as rotas redirecionam para `/` (SPA) via `vercel.json`
+- **Redirect SPA:** `public/_redirects` como fallback
 
-export const UserCard: FC<CardProps> = ({ user, onClick }) => {
-  // Implementation
-}
+### Alias de Path
 
-// ❌ EVITAR
-const UserCard = (props: any) => {
-  // Implementation
+O Vite esta configurado com alias `@` apontando para `src/`:
+```ts
+// vite.config.ts
+resolve: {
+  alias: {
+    '@': path.resolve(__dirname, './src'),
+  },
 }
 ```
 
 ---
 
-## 🤝 Como Contribuir
+## Referencias Uteis
 
-### Passo a Passo
-
-#### 1. **Clonar/Preparar Ambiente**
-```bash
-git clone <repo>
-cd "Universo AEB"
-npm install
-npm run dev
-```
-
-#### 2. **Criar uma Feature**
-```bash
-git checkout -b feature/nome-da-feature
-```
-
-#### 3. **Fazer Mudanças**
-- Seguir os padrões de código documentados acima
-- Atualizar componentes conforme necessário
-- Testar no dev server
-
-#### 4. **Commit**
-```bash
-git add .
-git commit -m "feat: descrição da feature"
-```
-
-#### 5. **Push**
-```bash
-git push origin feature/nome-da-feature
-```
-
-### Convenção de Commits
-Usar [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:` Nova feature
-- `fix:` Correção de bug
-- `docs:` Documentação
-- `style:` Formatação (sem mudança de funcionalidade)
-- `refactor:` Refatoração de código
-- `test:` Testes
-- `chore:` Dependências, build, etc.
-
-Exemplos:
-```bash
-git commit -m "feat: adicionar componente de busca"
-git commit -m "fix: corrigir animação do Hero"
-git commit -m "docs: atualizar README"
-```
-
-### Checklist Antes de Submeter
-
-- [ ] Código segue os padrões do projeto
-- [ ] TypeScript sem erros (`npm run build`)
-- [ ] Componentes são reutilizáveis
-- [ ] Props são bem tipadas
-- [ ] Responsivo em mobile
-- [ ] Sem console.log de debug
-- [ ] Issues/TODOs documentados
-
----
-
-## 📚 Referências Úteis
-
-### Documentações
+- [Design no Figma](https://www.figma.com/design/ovtfTVNmzU5pBUH2vltfvg/Universo-AEB)
 - [React Docs](https://react.dev)
-- [TypeScript Docs](https://www.typescriptlang.org/docs/)
 - [Vite Guide](https://vitejs.dev/guide/)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [Radix UI Primitives](https://www.radix-ui.com/docs/primitives/overview/introduction)
+- [Tailwind CSS v4](https://tailwindcss.com/docs)
 - [shadcn/ui Components](https://ui.shadcn.com)
-- [React Router](https://reactrouter.com/en/main)
 - [Framer Motion](https://www.framer.com/motion/)
+- [Radix UI Primitives](https://www.radix-ui.com/docs/primitives/overview/introduction)
+- [React Router](https://reactrouter.com)
 
-### Ferramentas Recomendadas
-- **VS Code** - Editor recomendado
-- **ES7+ React/Redux/React-Native snippets** - Extensão útil
-- **Tailwind CSS IntelliSense** - Autocomplete CSS
-- **TypeScript Vue Plugin** - Para melhor TypeScript support
-
-### Figma
-- [Design Original - Universo AEB](https://www.figma.com/design/ovtfTVNmzU5pBUH2vltfvg/Universo-AEB)
-
----
-
-## 📞 Suporte
-
-Para dúvidas ou problemas:
-1. Verificar documentação acima
-2. Buscar nos arquivos do projeto
-3. Consultar as dependências na seção Stack Tecnológico
-4. Verificar issues no repositório Git
-
----
-
-**Última atualização**: Março 2026  
-**Status**: Ativo e em desenvolvimento  
-**Deploy**: Vercel
+### Ferramentas Recomendadas para o Editor
+- **Tailwind CSS IntelliSense** - Autocomplete de classes
+- **ES7+ React/Redux snippets** - Snippets para React
+- **TypeScript** - Suporte nativo no VS Code
 
