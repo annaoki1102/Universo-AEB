@@ -44,14 +44,6 @@ export function Hero() {
             >
               Iniciar Exploração
             </motion.a>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-transparent border-2 border-cyan-500/50 text-cyan-300 rounded-lg font-medium hover:bg-cyan-500/10 transition-colors"
-            >
-              Saiba Mais
-            </motion.button>
           </div>
         </motion.div>
         

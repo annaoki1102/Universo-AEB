@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 
 const features = [
   {
-    image: "/images/navegacao.png",
+    image: "/images/Sagi 6.png",
     title: 'Navegação Inteligente',
     description: 'Sistema avançado de navegação que orienta usuários na exploração de conteúdos e trilhas do conhecimento espacial.',
   },
@@ -29,7 +29,7 @@ export function Features() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent pb-2 leading-[1.2]">
             Navegação
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
