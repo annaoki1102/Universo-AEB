@@ -1,8 +1,9 @@
 import { motion } from 'motion/react';
 import sagiCrabImage from '../../assets/sagicrab.png';
 import logoImage from '../../assets/fe4c45fab02d404987448768223a2c0afc33ab15.png';
+import React from 'react';
 
-export function Hero() {
+export function Hero(): React.JSX.Element {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
       {/* Gradient overlay */}
