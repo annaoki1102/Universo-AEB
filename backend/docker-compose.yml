@@ -1,0 +1,16 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_aeb
+    ports:
+      - "6335:6333"  # ← Porta 6335 no host, 6333 no container
+      - "6336:6334"  # ← Porta 6336 no host, 6334 no container
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    restart: unless-stopped
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+ 
+volumes:
+  qdrant_storage:
+    driver: local

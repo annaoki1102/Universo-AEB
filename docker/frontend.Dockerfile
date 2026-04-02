@@ -1,17 +1,17 @@
 FROM node:20-alpine AS build
 
-WORKDIR /app/frontend
+WORKDIR /app
 
-COPY frontend/package*.json ./
+COPY package*.json ./
 RUN npm ci
 
-COPY frontend ./
+COPY . .
 RUN npm run build
 
 FROM nginx:1.27-alpine
 
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/frontend/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 

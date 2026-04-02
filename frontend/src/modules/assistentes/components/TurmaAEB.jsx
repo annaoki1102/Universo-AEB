@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/api").replace(/\/$/, "");
 const WEB_USER_STORAGE_KEY = "turma-aeb-web-user-id";
@@ -95,6 +96,7 @@ function getWebUserId() {
 }
 
 export default function TurmaAEB(){
+  const navigate = useNavigate();
   const [selected,  setSelected]  = useState(null);
   const [messages,  setMessages]  = useState([]);
   const [input,     setInput]     = useState("");
@@ -274,10 +276,14 @@ export default function TurmaAEB(){
               ← Voltar
             </button>
           )}
-          <div>
+          <button
+            type="button"
+            onClick={()=>navigate("/#about")}
+            style={{textDecoration:"none",display:"block",background:"transparent",border:"none",padding:0,cursor:"pointer",textAlign:"left"}}
+          >
             <div style={{fontFamily:"'Exo 2',sans-serif",fontWeight:900,fontSize:19,color:"white",letterSpacing:1}}>🛸 TURMA AEB</div>
             <div style={{fontSize:10,color:"rgba(255,255,255,0.38)",letterSpacing:2,textTransform:"uppercase"}}>Agência Espacial Brasileira · AEB Escola</div>
-          </div>
+          </button>
         </div>
         {char&&(
           <div style={{display:"flex",alignItems:"center",gap:10}}>
