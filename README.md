@@ -1,5 +1,58 @@
 # Universo AEB
 
+universo-aeb/
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── core/
+│   │   ├── modules/
+│   │   │   ├── assistentes/
+│   │   │   └── shared/
+│   │   └── api/
+│   ├── tests/
+│   ├── requirements.txt
+│   └── venv/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── App.tsx
+│   │   │   ├── main.tsx
+│   │   │   └── router.tsx
+│   │   │
+│   │   ├── modules/
+│   │   │   ├── assistentes/
+│   │   │   │   ├── pages/
+│   │   │   │   │   └── Assistentes.tsx
+│   │   │   │   ├── components/
+│   │   │   │   ├── services/
+│   │   │   │   └── hooks/
+│   │   │   │
+│   │   │   └── shared/
+│   │   │       ├── components/
+│   │   │       ├── hooks/
+│   │   │       └── utils/
+│   │   │
+│   │   ├── assets/
+│   │   └── styles/
+│   │       ├── index.css
+│   │       └── tailwind.css
+│   │
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── .env
+│
+├── docker/
+├── .gitignore
+└── README.md
+
+
+
+
+
 Plataforma web educacional da **Turma AEB** (Agencia Espacial Brasileira - AEB Escola), com tema espacial imersivo. O projeto apresenta assistentes virtuais de IA que guiam os usuarios em uma jornada de aprendizagem sobre exploracao espacial, satelites e tecnologia.
 
 Prototipado no Figma e convertido em uma Single Page Application totalmente funcional, hospedada na Vercel.
