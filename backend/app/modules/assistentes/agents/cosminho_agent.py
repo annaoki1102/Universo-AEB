@@ -31,14 +31,18 @@ class AgenticRAG:
     Adaptação: filtro por agent="cosminho" no Qdrant
     """
 
-    def __init__(self, qdrant_client: QdrantClient, collection_name: str,
-                 embedder: SentenceTransformer):
+    def __init__(
+        self,
+        qdrant_client: QdrantClient,
+        collection_name: str,
+        embedder: SentenceTransformer
+    ):
         self.qdrant = qdrant_client
         self.collection_name = collection_name
         self.embedder = embedder
 
         print("   📊 Carregando reranker...")
-        self.reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+        self.reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
         print("   ✅ Reranker carregado")
 
     def analyze_query(self, query: str) -> Dict:
@@ -54,21 +58,31 @@ class AgenticRAG:
             "filter_section": None,
         }
 
-        people_keywords = ["quem é", "quem são", "presidente", "diretor",
-                           "diretora", "procurador", "auditor", "coordenador",
-                           "chefe", "assessor"]
+        people_keywords = [
+            "quem é", "quem são", "presidente", "diretor",
+            "diretora", "procurador", "auditor", "coordenador",
+            "chefe", "assessor"
+        ]
         if any(kw in query_lower for kw in people_keywords):
-            analysis.update({"is_about_people": True, "type": "factual",
-                              "needs_filter": True,
-                              "filter_section": "dirigentes",
-                              "complexity": "low"})
+            analysis.update({
+                "is_about_people": True,
+                "type": "factual",
+                "needs_filter": True,
+                "filter_section": "dirigentes",
+                "complexity": "low"
+            })
 
-        project_keywords = ["projeto", "satélite", "missão", "programa",
-                            "itasat", "aldebaran", "cbers", "amazonia",
-                            "alcântara", "vls", "vlm", "cla"]
+        project_keywords = [
+            "projeto", "satélite", "missão", "programa",
+            "itasat", "aldebaran", "cbers", "amazonia",
+            "alcântara", "vls", "vlm", "cla"
+        ]
         if any(kw in query_lower for kw in project_keywords):
-            analysis.update({"is_about_projects": True, "type": "exploratory",
-                              "complexity": "medium"})
+            analysis.update({
+                "is_about_projects": True,
+                "type": "exploratory",
+                "complexity": "medium"
+            })
 
         compare_keywords = ["compare", "diferença", "comparação", "versus", "vs"]
         if any(kw in query_lower for kw in compare_keywords):
@@ -81,12 +95,19 @@ class AgenticRAG:
 
     def decide_strategy(self, query: str, analysis: Dict) -> Dict:
         """Mesma lógica original."""
-        strategy = {"top_k": 15, "use_reranking": True,
-                    "page_range": None, "expand_search": False}
+        strategy = {
+            "top_k": 15,
+            "use_reranking": True,
+            "page_range": None,
+            "expand_search": False
+        }
 
         if analysis["is_about_people"]:
-            strategy.update({"top_k": 10, "page_range": [1, 30],
-                              "expand_search": False})
+            strategy.update({
+                "top_k": 10,
+                "page_range": [1, 30],
+                "expand_search": False
+            })
             print("   🎯 Estratégia: DIRIGENTES (páginas 1-30, top_k=10)")
 
         elif analysis["type"] == "comparative":
@@ -108,34 +129,17 @@ class AgenticRAG:
 
     def execute_search(self, query: str, strategy: Dict) -> List:
         """
-        ✅ ADAPTAÇÃO: prefixo E5 + filtro agent="cosminho"
+        Busca no Qdrant sem filtro por agent, para testar a recuperação
+        de documentos e validar se o problema estava no filtro.
         """
-        # prefixo necessário para multilingual-e5-large
         query_emb = self.embedder.encode(
-            f"query: {query}", normalize_embeddings=True).tolist()
-
-        # ✅ filtro por agente — busca só nos docs do Cosminho
-        agent_filter = Filter(must=[
-            FieldCondition(key="agent",
-                           match=MatchValue(value="cosminho"))
-        ])
-
-        # Adiciona filtro de página se necessário
-        if strategy["page_range"]:
-            agent_filter.must.append(
-                FieldCondition(
-                    key="page",
-                    range=Range(
-                        gte=strategy["page_range"][0],
-                        lte=strategy["page_range"][1],
-                    ),
-                )
-            )
+            f"query: {query}",
+            normalize_embeddings=True
+        ).tolist()
 
         results = self.qdrant.query_points(
             collection_name=self.collection_name,
             query=query_emb,
-            query_filter=agent_filter,
             limit=strategy["top_k"],
             with_payload=True,
         ).points
@@ -146,25 +150,30 @@ class AgenticRAG:
         """Mesma lógica original."""
         if not results or len(results) <= 1:
             return results
+
         pairs = [[query, r.payload["text"]] for r in results]
         scores = self.reranker.predict(pairs)
-        ranked = sorted(zip(results, scores), key=lambda x: x[1],
-                        reverse=True)[:top_k]
+        ranked = sorted(zip(results, scores), key=lambda x: x[1], reverse=True)[:top_k]
         return [r for r, _ in ranked]
 
     def evaluate_results(self, results: List, analysis: Dict) -> Dict:
         """Mesma lógica original."""
         if not results:
-            return {"sufficient": False, "confidence": 0.0,
-                    "needs_expansion": True}
+            return {
+                "sufficient": False,
+                "confidence": 0.0,
+                "needs_expansion": True
+            }
 
         top_scores = [r.score for r in results[:3] if hasattr(r, "score")]
         avg_score = sum(top_scores) / len(top_scores) if top_scores else 0.5
         threshold = 0.25 if analysis["type"] == "factual" else 0.18
 
-        return {"sufficient": avg_score >= threshold,
-                "confidence": avg_score,
-                "needs_expansion": avg_score < 0.15}
+        return {
+            "sufficient": avg_score >= threshold,
+            "confidence": avg_score,
+            "needs_expansion": avg_score < 0.15
+        }
 
     def format_context(self, results: List) -> Optional[str]:
         """
@@ -172,17 +181,20 @@ class AgenticRAG:
         """
         if not results:
             return None
+
         parts = []
         for i, hit in enumerate(results, 1):
-            page     = hit.payload.get("page", "?")
+            page = hit.payload.get("page", "?")
             doc_name = hit.payload.get("doc_name", "AEB 2024")
-            text     = hit.payload.get("text", "")
-            score    = getattr(hit, "score", 0.0)
+            text = hit.payload.get("text", "")
+            score = getattr(hit, "score", 0.0)
+
             parts.append(
                 f"[Trecho {i} — {doc_name} | Pág. {page} | "
                 f"Relevância: {score:.3f}]\n{text}"
             )
-        return "\n\n" + "="*60 + "\n\n".join(parts)
+
+        return "\n\n" + "=" * 60 + "\n\n".join(parts)
 
     def query(self, user_query: str) -> Optional[str]:
         """Fluxo principal — idêntico ao original."""
@@ -204,7 +216,10 @@ class AgenticRAG:
         if strategy["use_reranking"]:
             print("   🔄 Reranking...")
             results = self.rerank_results(
-                user_query, results, top_k=min(10, len(results)))
+                user_query,
+                results,
+                top_k=min(10, len(results))
+            )
             print(f"   └─ Top {len(results)} reordenados")
 
         evaluation = self.evaluate_results(results, analysis)
@@ -215,8 +230,10 @@ class AgenticRAG:
             strategy["top_k"] = min(strategy["top_k"] * 2, 40)
             strategy["page_range"] = None
             results = self.execute_search(user_query, strategy)
+
             if strategy["use_reranking"]:
                 results = self.rerank_results(user_query, results, top_k=15)
+
             print(f"   └─ {len(results)} chunks após expansão")
 
         return self.format_context(results)
@@ -233,23 +250,20 @@ class CosminhoAgent:
     """
 
     def __init__(self) -> None:
-        # ✅ ADAPTAÇÃO: usa Anthropic (Claude) em vez de OpenAI
         #self.client = Anthropic(api_key=getenv("ANTHROPIC_API_KEY"))
         #self.model_name = getenv("MODEL_NAME", "claude-sonnet-4-20250514")
-        
-        self.client = OpenAI(api_key=getenv("OPENAI_API_KEY")) # OPENAI
-        #self.client = OpenAI(api_key=getenv("OPENAI_API_KEY"), base_url="https://chat.maritaca.ai/api") # MARITACA
+
+        self.client = OpenAI(api_key=getenv("OPENAI_API_KEY"))
+        #self.client = OpenAI(api_key=getenv("OPENAI_API_KEY"), base_url="https://chat.maritaca.ai/api")
         self.model_name = getenv("MODEL_NAME", "gpt-4o-mini")
 
-        # ✅ ADAPTAÇÃO: modelo multilíngue pt-BR
         print("   📊 Carregando embeddings (multilingual-e5-large)...")
         self.embedder = SentenceTransformer("intfloat/multilingual-e5-large")
         print("   ✅ Embeddings carregados")
 
-        # Qdrant
         self.collection_name = getenv("QDRANT_COLLECTION", "aeb_documentos")
-        qdrant_host    = getenv("QDRANT_HOST", "localhost")
-        qdrant_port    = int(getenv("QDRANT_PORT", "6333"))
+        qdrant_host = getenv("QDRANT_HOST", "localhost")
+        qdrant_port = int(getenv("QDRANT_PORT", "6333"))
         qdrant_api_key = getenv("QDRANT_API_KEY", None)
 
         try:
@@ -268,8 +282,7 @@ class CosminhoAgent:
                 )
 
             collections = [
-                c.name for c in
-                self.qdrant_client.get_collections().collections
+                c.name for c in self.qdrant_client.get_collections().collections
             ]
 
             if self.collection_name in collections:
@@ -292,10 +305,7 @@ class CosminhoAgent:
 
         print("✅ CosminhoAgent: ativo")
 
-    # ─── RESPOND ─────────────────────────────────────────────
-
-    def respond(self, messages: List[Dict],
-                query_type: str = "geral") -> Dict:
+    def respond(self, messages: List[Dict], query_type: str = "geral") -> Dict:
         """
         query_type vem do ClassifierAgent:
           'definicao'    → prioriza fonte oficial
@@ -305,7 +315,6 @@ class CosminhoAgent:
         messages = deepcopy(messages)
         user_input = messages[-1]["content"]
 
-        # Busca Agentic RAG
         context = None
         if self.use_qdrant:
             context = self.agentic_rag.query(user_input)
@@ -314,7 +323,6 @@ class CosminhoAgent:
             else:
                 print("   ⚠️  Nenhum contexto relevante encontrado")
 
-        # ✅ ADAPTAÇÃO: system prompt do Cosminho
         system_prompt = """Você é o Cosminho, assistente educacional animado \
 da Turma AEB (Agência Espacial Brasileira). 🚀
 
@@ -356,7 +364,6 @@ brasileiras. O que você quer explorar hoje?"
 - Respostas curtas e diretas, ideais para leitura em voz alta
 - Cite sempre a página do documento quando usar o contexto
 
-
 🔀 DELEGAÇÃO:
 Ao final de cada resposta, verifique o tema:
 - Se envolver legislação, PNAE, normas, RH ou licitação → adicione:
@@ -364,7 +371,6 @@ Ao final de cada resposta, verifique o tema:
 - Se for puramente técnico (satélites, lançamentos, CLA) → não adicione nada.
 """
 
-        # Prompt com ou sem contexto
         if context:
             prompt = f"""Contexto dos documentos AEB:
 {context}
@@ -382,39 +388,20 @@ e atualizados, sugira consultar o Relatório de Gestão 2024 em aeb.gov.br."""
 
         messages[-1]["content"] = prompt
 
-        # ✅ ADAPTAÇÃO: chamada Anthropic (sem "system" dentro de messages)
         input_messages = [
             {"role": msg["role"], "content": msg["content"]}
             for msg in messages[-5:]
         ]
 
-        """
-        response = self.client.messages.create(
-            model=self.model_name,
-            max_completion_tokens=1000,
-            system=system_prompt,
-            messages=input_messages,
-        )
-
-        reply = response.content[0].text
-        """
-        # ✅ substituir — sintaxe OpenAI correta
-        #input_messages_with_system = [
-        #          {"role": "system", "content": system_prompt}
-        #      ] + input_messages
-        """
-        response = self.client.chat.completions.create(
-            model=self.model_name,
-            max_completion_tokens=1000,
-            messages=input_messages_with_system,
-        )
-        """
-        #reply = response.choices[0].message.content
         input_messages_with_system = [
-              {"role": "system", "content": system_prompt}
+            {"role": "system", "content": system_prompt}
         ] + input_messages
 
-        reply = get_response(self.client, self.model_name, input_messages_with_system)
+        reply = get_response(
+            self.client,
+            self.model_name,
+            input_messages_with_system
+        )
         return self.postprocess(reply)
 
     def postprocess(self, response: str) -> Dict:
