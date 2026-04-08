@@ -3,7 +3,7 @@ import sys
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes.assistentes import router as assistentes_router
+from app.api.routes.assistentes import router as assistentes_router, get_agent_controller
 from app.core.config import settings
 
 
@@ -35,6 +35,12 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    @app.on_event("startup")
+    async def startup_event() -> None:
+        print("🚀 Inicializando AgentController no startup...")
+        get_agent_controller()
+        print("✅ AgentController pronto para uso.")
 
     app.include_router(assistentes_router)
     return app
